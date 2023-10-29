@@ -5,12 +5,16 @@ import React, { useEffect } from "react";
 import { useBoardStore } from "@/store/BoardStore";
 
 const Board = () => {
-  const getBoard = useBoardStore((state) => state.getBoard);
+  const [board, getBoard] = useBoardStore((state) => [
+    state.board,
+    state.getBoard,
+  ]);
 
   useEffect(() => {
     getBoard();
   }, [getBoard]);
 
+  console.log(board);
   return (
     <div>Board</div>
     // <DragDropContext>
