@@ -6,11 +6,14 @@ import { useBoardStore } from "@/store/BoardStore";
 import Column from "./Column";
 
 const Board = () => {
-  const [board, getBoard, setBoardState] = useBoardStore((state) => [
-    state.board,
-    state.getBoard,
-    state.setBoardState,
-  ]);
+  const [board, getBoard, setBoardState, updateTodoInDb] = useBoardStore(
+    (state) => [
+      state.board,
+      state.getBoard,
+      state.setBoardState,
+      state.updateTodoInDb,
+    ]
+  );
 
   useEffect(() => {
     getBoard();
@@ -62,7 +65,7 @@ const Board = () => {
       const newColumns = new Map(board.columns);
       newColumns.set(startCol.id, newCol);
 
-      // TODO update db
+      // TODO update db, only order of cards matters here
 
       setBoardState({ ...board, columns: newColumns });
     } else {
@@ -79,7 +82,7 @@ const Board = () => {
       newColumns.set(startCol.id, newCol);
       newColumns.set(finishCol.id, { id: finishCol.id, todos: finishTodos });
 
-      // TODO update db
+      updateTodoInDb(todoMoved, finishCol.id);
 
       setBoardState({ ...board, columns: newColumns });
     }
