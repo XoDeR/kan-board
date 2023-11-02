@@ -17,7 +17,7 @@ type Props = {
 
 const Column = ({ id, todos, index }: Props) => {
   const [searchString] = useBoardStore((state) => [state.searchString]);
-  const openModal = useModalStore((state) => state.openModal());
+  const openModal = useModalStore((state) => state.openModal);
 
   const idToColumnText: {
     [key in TypeColumn]: string;
