@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Modal from "@/components/Modal";
 
 export const metadata: Metadata = {
   title: "Kanban board",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#cfccc1]">{children}</body>
+      <body className="bg-[#cfccc1]">
+        {children}
+        <Modal />
+      </body>
     </html>
   );
 }
