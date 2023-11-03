@@ -1,5 +1,6 @@
-import { databases, storage } from "@/appwrite";
+import { ID, databases, storage } from "@/appwrite";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
+import uploadImage from "@/lib/uploadImage";
 import { create } from "zustand";
 
 interface BoardState {
@@ -9,6 +10,7 @@ interface BoardState {
   updateTodoInDb: (todo: Todo, columnId: TypeColumn) => void;
   searchString: string;
   setSearchString: (searchString: string) => void;
+  addTask: (todo: string, columnId: TypeColumn, image?: File | null) => void;
   deleteTask: (taskIndex: number, todoId: Todo, id: TypeColumn) => void;
   newTaskInput: string;
   setNewTaskInput: (input: string) => void;
@@ -40,6 +42,29 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   },
   searchString: "",
   setSearchString: (searchString) => set({ searchString }),
+  addTask: async (todo: string, columnId: TypeColumn, image?: File | null) => {
+    let file: Image | undefined;
+    if (image) {
+      const fileUploaded = await uploadImage(image);
+      if (fileUploaded) {
+        file = {
+          bucketId: fileUploaded.bucketId,
+          fileId: fileUploaded.$id,
+        };
+      }
+    }
+
+    await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+      ID.unique(),
+      {
+        title: todo,
+        status: columnId,
+        ...(file && { image: JSON.stringify(file) }),
+      }
+    );
+  },
   deleteTask: async (taskIndex: number, todo: Todo, id: TypeColumn) => {
     const newColumns = new Map(get().board.columns);
     newColumns.get(id)?.todos.splice(taskIndex, 1);
