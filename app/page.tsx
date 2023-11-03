@@ -9,7 +9,6 @@ export default function Home() {
       <Header />
       {/* Board */}
       <Board />
-      <h1>Kanban Board</h1>
     </main>
   );
 }
