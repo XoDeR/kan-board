@@ -94,7 +94,7 @@ const Column = ({ id, todos, index }: Props) => {
                   <div className="flex items-end justify-end p-2">
                     <button
                       className="text-green-500 hover:text-green-600"
-                      onClick={() => openModal}
+                      onClick={openModal}
                     >
                       <PlusCircleIcon className="h-10 w-10" />
                     </button>
