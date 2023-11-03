@@ -14,6 +14,8 @@ interface BoardState {
   setNewTaskInput: (input: string) => void;
   newTaskType: TypeColumn;
   setNewTaskType: (columnId: TypeColumn) => void;
+  image: File | null;
+  setImage: (image: File | null) => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get) => ({
@@ -42,10 +44,10 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     const newColumns = new Map(get().board.columns);
     newColumns.get(id)?.todos.splice(taskIndex, 1);
     set({ board: { columns: newColumns } });
-    // TODO add image
-    // if (todo.image) {
-    //   await storage.deleteFile(todo.image.bucketId, todo.image.fileId);
-    // }
+    if (todo.image) {
+      // TODO process image deletion
+      // await storage.deleteFile(todo.image.bucketId, todo.image.fileId);
+    }
     await databases.deleteDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID!,
       process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
@@ -56,4 +58,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   setNewTaskInput: (input: string) => set({ newTaskInput: input }),
   newTaskType: "todo",
   setNewTaskType: (columnId: TypeColumn) => set({ newTaskType: columnId }),
+  image: null,
+  setImage: (image: File | null) => set({ image }),
 }));
