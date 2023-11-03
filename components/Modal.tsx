@@ -70,6 +70,7 @@ const Modal = () => {
                 <TaskTypeRadioGroup />
                 <div>
                   <button
+                    type="button"
                     onClick={() => {
                       imagePickerRef.current?.click();
                     }}
