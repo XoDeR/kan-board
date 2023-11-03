@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-[#cfccc1]">
         {children}
-        {/* <Modal /> */}
+        <Modal />
       </body>
     </html>
   );
