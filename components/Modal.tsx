@@ -11,13 +11,14 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 const Modal = () => {
   const imagePickerRef = useRef<HTMLInputElement>(null);
 
-  const [addTask, image, setImage, newTaskInput, setNewTaskInput] =
+  const [addTask, image, setImage, newTaskInput, setNewTaskInput, newTaskType] =
     useBoardStore((state) => [
       state.addTask,
       state.image,
       state.setImage,
       state.newTaskInput,
       state.setNewTaskInput,
+      state.newTaskType,
     ]);
 
   const [isOpen, closeModal] = useModalStore((state) => [
@@ -28,6 +29,8 @@ const Modal = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!newTaskInput) return;
+
+    addTask(newTaskInput, newTaskType, image);
 
     setImage(null);
     closeModal();
